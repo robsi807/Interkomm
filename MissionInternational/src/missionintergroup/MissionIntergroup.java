@@ -4,6 +4,8 @@ import java.sql.Time;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 
+import missionintergroup.MissionIntergroupUpdate.UpdateContent;
+
 public class MissionIntergroup {
 	private final long id;
 	private GPSCoordinate location;
@@ -22,8 +24,8 @@ public class MissionIntergroup {
 	 * @param description
 	 * @param creationTime
 	 */
-	public MissionIntergroup(long id, GPSCoordinate location,
-			String title, String description, Time creationTime) {
+	public MissionIntergroup(long id, GPSCoordinate location, String title,
+			String description, Time creationTime) {
 		this.id = id;
 		this.location = location;
 		this.title = title;
@@ -33,6 +35,8 @@ public class MissionIntergroup {
 		numberOfUnits = new int[4]; // pos 0 = police, pos 1 = raddning, pos 2 =
 									// militar, pos 3 = ambulans
 		listeners = new HashSet<MissionIntergroupListener>();
+		addMissionUpdate(new MissionIntergroupUpdate(getId(),
+				UpdateContent.COMMENT, "Mission created"));
 	}
 
 	/**
@@ -40,9 +44,11 @@ public class MissionIntergroup {
 	 * @param entry
 	 */
 	public void addMissionUpdate(MissionIntergroupUpdate update) {
-		missionLog.add(update);
-		processUpdate(update);
-		notifyListeners();
+		if (getId() == update.getMissionId()) {
+			missionLog.add(update);
+			processUpdate(update);
+			notifyListeners();
+		}
 	}
 
 	private void processUpdate(MissionIntergroupUpdate update) {

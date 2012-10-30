@@ -1,0 +1,203 @@
+package testing;
+
+import java.awt.BorderLayout;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.sql.Time;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+
+import missionintergroup.GPSCoordinate;
+import missionintergroup.MissionIntergroup;
+import missionintergroup.MissionIntergroupListener;
+import missionintergroup.MissionIntergroupUpdate;
+import missionintergroup.MissionIntergroupUpdate.UpdateContent;
+
+public class TestingMission implements MissionIntergroupListener {
+
+	MissionIntergroup mission;
+
+	JTextArea txtEdit;
+	JFrame frame;
+	JLabel lblTitle;
+	JLabel lblId, lblLocation, lblDesc, lblTime;
+	JTextArea txtLog;
+	UpdateContent thatContent = UpdateContent.TITLE;
+
+	public static void main(String[] args) {
+		new TestingMission();
+	}
+
+	public TestingMission() {
+		mission = new MissionIntergroup(19049174017l, new GPSCoordinate(
+				10.123535, -3.508903), "Brand",
+				"Stor brand i radhus. 2 personer i fara.", new Time(
+						System.currentTimeMillis()));
+		mission.addListener(this);
+		createGUI();
+	}
+
+	private void createGUI() {
+		frame = new JFrame("Testing mission");
+		JPanel mainPanel = new JPanel();
+		mainPanel.setLayout(new BorderLayout());
+		JPanel labelPanel = new JPanel();
+		frame.setContentPane(mainPanel);
+
+		mainPanel.add(labelPanel, BorderLayout.NORTH);
+
+		allTheTexts();
+
+		labelPanel.add(lblTitle);
+		labelPanel.add(lblTime);
+		labelPanel.add(lblDesc);
+		labelPanel.add(lblLocation);
+		labelPanel.add(lblId);
+
+		JPanel editPanel = new JPanel();
+		txtEdit = new JTextArea("Edit the title!");
+		JButton btnEdit = new JButton("Edit!");
+		editPanel.add(txtEdit);
+		editPanel.add(btnEdit);
+
+		btnEdit.addMouseListener(new MouseListener() {
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				editPressed();
+
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+		});
+
+		JButton btnChangeContent = new JButton("that description");
+		editPanel.add(btnChangeContent);
+		btnChangeContent.addMouseListener(new MouseListener() {
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				thatContentPressed();
+
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+		});
+
+		mainPanel.add(editPanel, BorderLayout.CENTER);
+
+		JPanel logPanel = new JPanel();
+		txtLog = new JTextArea(10, 10);
+		txtLog.setEditable(false);
+		updateLog(mission);
+		logPanel.add(txtLog);
+		
+		mainPanel.add(logPanel, BorderLayout.SOUTH);
+
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.pack();
+		frame.setVisible(true);
+	}
+
+	private void allTheTexts() {
+		lblId = new JLabel("ID: " + Double.toString(mission.getId()));
+		lblLocation = new JLabel("@long: "
+				+ mission.getLocation().getLongitude() + " lat: "
+				+ mission.getLocation().getLatitude());
+		lblTitle = new JLabel(mission.getTitle());
+		lblDesc = new JLabel(mission.getDescription());
+		lblTime = new JLabel(mission.getCreationTime().toString());
+	}
+
+	private void thatContentPressed() {
+		thatContent = UpdateContent.COMMENT;
+	}
+
+	private void editPressed() {
+
+		updateCurrentMission(new MissionIntergroupUpdate(mission.getId(),
+				thatContent, txtEdit.getText()));
+
+		updateAllText();
+		frame.repaint();
+
+	}
+
+	private void updateAllText() {
+		lblDesc.setText(mission.getDescription());
+		lblLocation.setText("@long: " + mission.getLocation().getLongitude()
+				+ " lat: " + mission.getLocation().getLatitude());
+		lblTitle.setText(mission.getTitle());
+	}
+
+	private void updateCurrentMission(MissionIntergroupUpdate update) {
+		mission.addMissionUpdate(update);
+	}
+
+	@Override
+	public void missionUpdated(MissionIntergroup updatedMission) {
+		updateLog(updatedMission);
+	}
+
+	private void updateLog(MissionIntergroup mission) {
+		txtLog.setText("");
+		for (MissionIntergroupUpdate up : mission.getMissionLog()) {
+			if (up.getContent() == UpdateContent.COMMENT) {
+				txtLog.setText(txtLog.getText() + up.getNewValue() + "\n");
+			} else {
+				txtLog.setText(txtLog.getText() + up.getContent().toString()
+						+ " is set to " + up.getNewValue() + "\n");
+			}
+		}
+		
+	}
+}
