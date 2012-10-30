@@ -1,11 +1,18 @@
 package missionintergroup;
 
 import java.sql.Time;
+import java.text.ParseException;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 
 import missionintergroup.MissionIntergroupUpdate.UpdateContent;
 
+/**
+ * Mission class used for communication between the different organization's servers. Every organization has to use this to communicate with
+ * each other.
+ * @author robsi807
+ *
+ */
 public class MissionIntergroup {
 	private final long id;
 	private GPSCoordinate location;
@@ -16,13 +23,12 @@ public class MissionIntergroup {
 	private int[] numberOfUnits;
 
 	/**
-	 * 
-	 * @param id
-	 * @param longitude
-	 * @param latitude
-	 * @param title
-	 * @param description
-	 * @param creationTime
+	 * Mission object used for communication between the different organization's servers.
+	 * @param id MÅSTE DEFINIERAS!!!!!!!!! UNIK FÖR VARJE ELLER DELAD?
+	 * @param location describes the location of the mission as a GPSCoordinate
+	 * @param title short description of the mission
+	 * @param description more detailed description of the mission
+	 * @param creationTime time when the mission is created
 	 */
 	public MissionIntergroup(long id, GPSCoordinate location, String title,
 			String description, Time creationTime) {
@@ -35,22 +41,26 @@ public class MissionIntergroup {
 		numberOfUnits = new int[4]; // pos 0 = police, pos 1 = raddning, pos 2 =
 									// militar, pos 3 = ambulans
 		listeners = new HashSet<MissionIntergroupListener>();
-		addMissionUpdate(new MissionIntergroupUpdate(getId(),
+		updateMission(new MissionIntergroupUpdate(getId(),
 				UpdateContent.COMMENT, "Mission created"));
 	}
 
 	/**
-	 * 
-	 * @param entry
+	 * Updates the mission with a MissionIntergroupUpdate object. An update can only update a mission with the same ID.
+	 * All updates are added to the missionlog.
+	 * @param update
 	 */
-	public void addMissionUpdate(MissionIntergroupUpdate update) {
+	public void updateMission(MissionIntergroupUpdate update) {
 		if (getId() == update.getMissionId()) {
 			missionLog.add(update);
 			processUpdate(update);
-			notifyListeners();
+			notifyListeners(update);
 		}
 	}
 
+	/*
+	 * Process the update to only change the relevant information based on the Content of the update.
+	 */
 	private void processUpdate(MissionIntergroupUpdate update) {
 		switch (update.getContent()) {
 		case LOCATION:
@@ -81,42 +91,52 @@ public class MissionIntergroup {
 
 	}
 
-	// EXCEPTIONS AND STUFFS!
-	private void setNumberOfPolice(String nrOfPolice) {
+	private void setNumberOfPolice(String nrOfPolice) throws NumberFormatException{
 		numberOfUnits[0] = Integer.parseInt(nrOfPolice);
 	}
 
-	private void setNumberOfFirebrigade(String nrOfFirebridgade) {
+	private void setNumberOfFirebrigade(String nrOfFirebridgade) throws NumberFormatException {
 		numberOfUnits[1] = Integer.parseInt(nrOfFirebridgade);
 	}
 
-	private void setNumberOfMilitary(String nrOfMilitary) {
+	private void setNumberOfMilitary(String nrOfMilitary) throws NumberFormatException {
 		numberOfUnits[2] = Integer.parseInt(nrOfMilitary);
 	}
 
-	private void setNumberOfParamedics(String nrOfParamedics) {
+	private void setNumberOfParamedics(String nrOfParamedics) throws NumberFormatException {
 		numberOfUnits[3] = Integer.parseInt(nrOfParamedics);
 	}
 
-	// EXCEPTIONS AND STUFFS!
-
+	/**
+	 * @return the number of police units that are active on the mission
+	 */
 	public int getNumberOfPolice() {
 		return numberOfUnits[0];
 	}
 
+	/**
+	 * @return the number of firebrigade units that are active on the mission
+	 */
 	public int getNumberOfFirebrigade() {
 		return numberOfUnits[1];
 	}
 
+	/**
+	 * @return the number of military units that are active on the mission
+	 */
 	public int getNumberOfMilitary() {
 		return numberOfUnits[2];
 	}
 
+	/**
+	 * @return the number of paramedics that are active on the mission
+	 */
 	public int getNumberOfParamedics() {
 		return numberOfUnits[3];
 	}
 
-	public void setLocation(GPSCoordinate location) {
+	private void setLocation(GPSCoordinate location) {
+		if(location != null)
 		this.location = location;
 	}
 
@@ -136,14 +156,14 @@ public class MissionIntergroup {
 		return creationTime;
 	}
 
-	private void setCreationTime(Time creationTime) {
-		this.creationTime = creationTime;
-	}
-
 	public long getId() {
 		return id;
 	}
 
+	/**
+	 * 
+	 * @return the detailed mission description
+	 */
 	public String getDescription() {
 		return description;
 	}
@@ -152,18 +172,22 @@ public class MissionIntergroup {
 		this.description = description;
 	}
 
+	/**
+	 * 
+	 * @return the current log of the mission as a HashSet <-? is this the vettigaste solösning?
+	 */
 	public HashSet<MissionIntergroupUpdate> getMissionLog() {
 		return missionLog;
 	}
 
-	private void notifyListeners() {
+	private void notifyListeners(MissionIntergroupUpdate update) {
 		for (MissionIntergroupListener listener : listeners) {
-			listener.missionUpdated(this);
+			listener.missionUpdated(update);
 		}
 	}
 
 	/**
-	 * 
+	 * Registers a listener to changes of the mission.
 	 * @param listener
 	 */
 	public void addListener(MissionIntergroupListener listener) {

@@ -1,7 +1,22 @@
 package missionintergroup;
 
+/**
+ * Class for storing a location in longitude and latitude.
+ * @author robsi807
+ *
+ */
 public class GPSCoordinate {
 	private double longitude, latitude;
+
+	/**
+	 * Datatype containing two doubles, longitude and latitude.
+	 * @param longitude
+	 * @param latitude
+	 */
+	public GPSCoordinate(double longitude, double latitude) {
+		this.longitude = longitude;
+		this.latitude = latitude;
+	}
 
 	public double getLongitude() {
 		return longitude;
@@ -16,12 +31,6 @@ public class GPSCoordinate {
 	}
 
 	public void setLatitude(double latitude) {
-		this.latitude = latitude;
-	}
-
-	public GPSCoordinate(double longitude, double latitude) {
-		super();
-		this.longitude = longitude;
 		this.latitude = latitude;
 	}
 

@@ -27,7 +27,7 @@ public class TestingMission implements MissionIntergroupListener {
 	JLabel lblTitle;
 	JLabel lblId, lblLocation, lblDesc, lblTime;
 	JTextArea txtLog;
-	UpdateContent thatContent = UpdateContent.TITLE;
+	UpdateContent thatContent = UpdateContent.LOCATION;
 
 	public static void main(String[] args) {
 		new TestingMission();
@@ -138,7 +138,7 @@ public class TestingMission implements MissionIntergroupListener {
 		JPanel logPanel = new JPanel();
 		txtLog = new JTextArea(10, 10);
 		txtLog.setEditable(false);
-		updateLog(mission);
+		updateLog(null);
 		logPanel.add(txtLog);
 		
 		mainPanel.add(logPanel, BorderLayout.SOUTH);
@@ -180,21 +180,22 @@ public class TestingMission implements MissionIntergroupListener {
 	}
 
 	private void updateCurrentMission(MissionIntergroupUpdate update) {
-		mission.addMissionUpdate(update);
+		mission.updateMission(update);
 	}
 
 	@Override
-	public void missionUpdated(MissionIntergroup updatedMission) {
+	public void missionUpdated(MissionIntergroupUpdate updatedMission) {
 		updateLog(updatedMission);
 	}
 
-	private void updateLog(MissionIntergroup mission) {
+	private void updateLog(MissionIntergroupUpdate update) {
 		txtLog.setText("");
+		
 		for (MissionIntergroupUpdate up : mission.getMissionLog()) {
 			if (up.getContent() == UpdateContent.COMMENT) {
-				txtLog.setText(txtLog.getText() + up.getNewValue() + "\n");
+				txtLog.setText( txtLog.getText()+ "<" + up.getTimestamp() + ">" + up.getNewValue() + "\n");
 			} else {
-				txtLog.setText(txtLog.getText() + up.getContent().toString()
+				txtLog.setText(txtLog.getText() + "<" + up.getTimestamp() + ">" + up.getContent().toString()
 						+ " is set to " + up.getNewValue() + "\n");
 			}
 		}
