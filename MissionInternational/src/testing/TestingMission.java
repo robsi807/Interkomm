@@ -27,7 +27,7 @@ public class TestingMission implements MissionIntergroupListener {
 	JLabel lblTitle;
 	JLabel lblId, lblLocation, lblDesc, lblTime;
 	JTextArea txtLog;
-	UpdateContent thatContent = UpdateContent.LOCATION;
+	UpdateContent thatContent = UpdateContent.TITLE;
 
 	public static void main(String[] args) {
 		new TestingMission();

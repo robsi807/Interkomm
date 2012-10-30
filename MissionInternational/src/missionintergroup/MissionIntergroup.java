@@ -1,9 +1,8 @@
 package missionintergroup;
 
 import java.sql.Time;
-import java.text.ParseException;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
+import java.util.LinkedList;
 
 import missionintergroup.MissionIntergroupUpdate.UpdateContent;
 
@@ -18,7 +17,7 @@ public class MissionIntergroup {
 	private GPSCoordinate location;
 	private String title, description;
 	private Time creationTime;
-	private LinkedHashSet<MissionIntergroupUpdate> missionLog;
+	private LinkedList<MissionIntergroupUpdate> missionLog;
 	private HashSet<MissionIntergroupListener> listeners;
 	private int[] numberOfUnits;
 
@@ -37,7 +36,7 @@ public class MissionIntergroup {
 		this.title = title;
 		this.description = description;
 		this.creationTime = creationTime;
-		missionLog = new LinkedHashSet<MissionIntergroupUpdate>();
+		missionLog = new LinkedList<MissionIntergroupUpdate>();
 		numberOfUnits = new int[4]; // pos 0 = police, pos 1 = raddning, pos 2 =
 									// militar, pos 3 = ambulans
 		listeners = new HashSet<MissionIntergroupListener>();
@@ -176,7 +175,7 @@ public class MissionIntergroup {
 	 * 
 	 * @return the current log of the mission as a HashSet <-? is this the vettigaste solösning?
 	 */
-	public HashSet<MissionIntergroupUpdate> getMissionLog() {
+	public LinkedList<MissionIntergroupUpdate> getMissionLog() {
 		return missionLog;
 	}
 
