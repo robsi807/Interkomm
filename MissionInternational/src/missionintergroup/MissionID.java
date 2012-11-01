@@ -39,9 +39,9 @@ public class MissionID {
 	}
 	
 	/**
-	 * Checks if this MissionId is the same as another one. Returns true if they are the same.
+	 * Checks if this MissionId is the same as another one.
 	 * @param missionId the MissionID that you want to compare to this one
-	 * @return
+	 * @return true if they are the same
 	 */
 	public Boolean checkIfEqual(MissionID missionId){
 		if(organizationChar == missionId.getOrganizationChar()){

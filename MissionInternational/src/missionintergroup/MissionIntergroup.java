@@ -1,6 +1,6 @@
 package missionintergroup;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedList;
 
@@ -194,6 +194,14 @@ public class MissionIntergroup {
 	 */
 	public void addListener(MissionIntergroupListener listener) {
 		listeners.add(listener);
+	}
+	
+	/**
+	 * Removes a listener from this mission.
+	 * @param listener the listener that will be removed from the set of listeners
+	 */
+	public void removeListener(MissionIntergroupListener listener){
+		listeners.remove(listener);
 	}
 
 }
