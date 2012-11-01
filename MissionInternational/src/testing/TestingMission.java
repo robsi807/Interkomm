@@ -3,14 +3,14 @@ package testing;
 import java.awt.BorderLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.sql.Time;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
 
 import missionintergroup.GPSCoordinate;
 import missionintergroup.MissionIntergroup;
@@ -30,14 +30,15 @@ public class TestingMission implements MissionIntergroupListener {
 	UpdateContent thatContent = UpdateContent.TITLE;
 
 	public static void main(String[] args) {
+		Date d = new Date(System.currentTimeMillis());
+		System.out.println(new SimpleDateFormat("yyyy.MM.dd hh:mm:ss").format(d));
 		new TestingMission();
 	}
 
 	public TestingMission() {
 		mission = new MissionIntergroup(19049174017l, new GPSCoordinate(
 				10.123535, -3.508903), "Brand",
-				"Stor brand i radhus. 2 personer i fara.", new Time(
-						System.currentTimeMillis()));
+				"Stor brand i radhus. 2 personer i fara.", new Date(System.currentTimeMillis()));
 		mission.addListener(this);
 		createGUI();
 	}

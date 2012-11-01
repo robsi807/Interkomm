@@ -11,14 +11,13 @@ public class MissionIntergroupUpdate {
 	private long missionId;
 	private String newValue;
 	private UpdateContent content;
-	private GPSCoordinate location;
 	private Time timestamp;
 
 	/**
-	 * Constructor used for updating all mission updates except Location updates. See the other constructor for details about updating the LOCATION.
+	 * Constructor used for updating all missi
 	 * @param missionId the unique ID of the mission that you want to update
 	 * @param content the type of content you want to update. See enum UpdateContent for details
-	 * @param newValue the value of the update as a String. REMEMBER to write an integer as a String when updating NR_OF_... Else error will find you
+	 * @param newValue the value of the update as a String. REMEMBER to write an integer as a String when updating NR_OF_... Else error will find you. Use Json to convert the GPSCoordinate to a String when updating LOCATION.
 	 */
 	public MissionIntergroupUpdate(long missionId, UpdateContent content,
 			String newValue) {
@@ -39,12 +38,6 @@ public class MissionIntergroupUpdate {
 	 * @param missionId the unique ID of the mission that you want to update
 	 * @param location the new location of a mission as a GPSCoordinate.
 	 */
-	public MissionIntergroupUpdate(long missionId,
-			GPSCoordinate location) {
-		this.missionId = missionId;
-		this.content = UpdateContent.LOCATION;
-		this.location = location;
-	}
 	
 	public long getMissionId() {
 		return missionId;
@@ -69,14 +62,6 @@ public class MissionIntergroupUpdate {
 	
 	/**
 	 * 
-	 * @return the new GPSCoordinate for this update. If LOCATION is NOT changed it will return NULL
-	 */
-	public GPSCoordinate getGPSCooordinate(){
-		return location;
-	}
-	
-	/**
-	 * 
 	 * @return the time when the update was created
 	 */
 	public Time getTimestamp() {
@@ -84,7 +69,7 @@ public class MissionIntergroupUpdate {
 	}
 
 	/**
-	 * The different types of possible updates. Update the LOCATION using the correct constructor (there is two of them, find it!) else errors will find you 
+	 * The different types of possible updates. Use Json to convert the GPSCoordinate to a String when updating LOCATION.
 	 * @author robsi807
 	 *
 	 */

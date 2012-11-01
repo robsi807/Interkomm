@@ -1,14 +1,16 @@
 package missionintergroup;
 
-import java.sql.Time;
+import java.sql.Date;
 import java.util.HashSet;
 import java.util.LinkedList;
 
 import missionintergroup.MissionIntergroupUpdate.UpdateContent;
 
+import com.google.gson.Gson;
+
 /**
  * Mission class used for communication between the different organization's servers. Every organization has to use this to communicate with
- * each other.
+ * each other. Use the updateMission() method to update an already existing mission.
  * @author robsi807
  *
  */
@@ -16,7 +18,7 @@ public class MissionIntergroup {
 	private final long id;
 	private GPSCoordinate location;
 	private String title, description;
-	private Time creationTime;
+	private Date creationTime;
 	private LinkedList<MissionIntergroupUpdate> missionLog;
 	private HashSet<MissionIntergroupListener> listeners;
 	private int[] numberOfUnits;
@@ -30,7 +32,7 @@ public class MissionIntergroup {
 	 * @param creationTime time when the mission is created
 	 */
 	public MissionIntergroup(long id, GPSCoordinate location, String title,
-			String description, Time creationTime) {
+			String description, Date creationTime) {
 		this.id = id;
 		this.location = location;
 		this.title = title;
@@ -63,7 +65,8 @@ public class MissionIntergroup {
 	private void processUpdate(MissionIntergroupUpdate update) {
 		switch (update.getContent()) {
 		case LOCATION:
-			setLocation(update.getGPSCooordinate());
+			GPSCoordinate location = new Gson().fromJson(update.getNewValue(), GPSCoordinate.class);
+			setLocation(location);
 			break;
 		case TITLE:
 			setTitle(update.getNewValue());
@@ -151,7 +154,7 @@ public class MissionIntergroup {
 		this.title = title;
 	}
 
-	public Time getCreationTime() {
+	public Date getCreationTime() {
 		return creationTime;
 	}
 
