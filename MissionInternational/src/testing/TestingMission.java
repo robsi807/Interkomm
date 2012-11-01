@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 import missionintergroup.GPSCoordinate;
+import missionintergroup.MissionID;
 import missionintergroup.MissionIntergroup;
 import missionintergroup.MissionIntergroupListener;
 import missionintergroup.MissionIntergroupUpdate;
@@ -36,7 +37,7 @@ public class TestingMission implements MissionIntergroupListener {
 	}
 
 	public TestingMission() {
-		mission = new MissionIntergroup(19049174017l, new GPSCoordinate(
+		mission = new MissionIntergroup(new MissionID('r', 74891272323l), new GPSCoordinate(
 				10.123535, -3.508903), "Brand",
 				"Stor brand i radhus. 2 personer i fara.", new Date(System.currentTimeMillis()));
 		mission.addListener(this);
@@ -150,7 +151,7 @@ public class TestingMission implements MissionIntergroupListener {
 	}
 
 	private void allTheTexts() {
-		lblId = new JLabel("ID: " + Double.toString(mission.getId()));
+		lblId = new JLabel("ID: " + mission.getId().idToString());
 		lblLocation = new JLabel("@long: "
 				+ mission.getLocation().getLongitude() + " lat: "
 				+ mission.getLocation().getLatitude());

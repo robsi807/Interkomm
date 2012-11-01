@@ -15,7 +15,7 @@ import com.google.gson.Gson;
  *
  */
 public class MissionIntergroup {
-	private final long id;
+	private final MissionID id;
 	private GPSCoordinate location;
 	private String title, description;
 	private Date creationTime;
@@ -31,7 +31,7 @@ public class MissionIntergroup {
 	 * @param description more detailed description of the mission
 	 * @param creationTime time when the mission is created
 	 */
-	public MissionIntergroup(long id, GPSCoordinate location, String title,
+	public MissionIntergroup(MissionID id, GPSCoordinate location, String title,
 			String description, Date creationTime) {
 		this.id = id;
 		this.location = location;
@@ -52,7 +52,7 @@ public class MissionIntergroup {
 	 * @param update
 	 */
 	public void updateMission(MissionIntergroupUpdate update) {
-		if (getId() == update.getMissionId()) {
+		if (getId().checkIfEqual(update.getMissionId())) {
 			missionLog.add(update);
 			processUpdate(update);
 			notifyListeners(update);
@@ -158,7 +158,7 @@ public class MissionIntergroup {
 		return creationTime;
 	}
 
-	public long getId() {
+	public MissionID getId() {
 		return id;
 	}
 

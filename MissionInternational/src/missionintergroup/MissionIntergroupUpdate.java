@@ -8,7 +8,7 @@ import java.sql.Time;
  *
  */
 public class MissionIntergroupUpdate {
-	private long missionId;
+	private MissionID missionId;
 	private String newValue;
 	private UpdateContent content;
 	private Time timestamp;
@@ -19,7 +19,7 @@ public class MissionIntergroupUpdate {
 	 * @param content the type of content you want to update. See enum UpdateContent for details
 	 * @param newValue the value of the update as a String. REMEMBER to write an integer as a String when updating NR_OF_... Else error will find you. Use Json to convert the GPSCoordinate to a String when updating LOCATION.
 	 */
-	public MissionIntergroupUpdate(long missionId, UpdateContent content,
+	public MissionIntergroupUpdate(MissionID missionId, UpdateContent content,
 			String newValue) {
 		this.missionId = missionId;
 		this.content = content;
@@ -39,7 +39,7 @@ public class MissionIntergroupUpdate {
 	 * @param location the new location of a mission as a GPSCoordinate.
 	 */
 	
-	public long getMissionId() {
+	public MissionID getMissionId() {
 		return missionId;
 	}
 
