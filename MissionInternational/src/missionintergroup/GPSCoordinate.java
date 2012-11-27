@@ -1,11 +1,17 @@
 package missionintergroup;
 
+import java.io.Serializable;
+
 /**
  * Class for storing a location in longitude and latitude.
  * @author robsi807
  *
  */
-public class GPSCoordinate {
+public class GPSCoordinate implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private double longitude, latitude;
 
 	/**

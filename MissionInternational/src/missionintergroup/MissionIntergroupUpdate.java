@@ -9,7 +9,7 @@ import java.sql.Time;
  */
 public class MissionIntergroupUpdate {
 	private MissionID missionId;
-	private String newValue;
+	private Object newValue;
 	private UpdateContent content;
 	private Time timestamp;
 
@@ -20,7 +20,7 @@ public class MissionIntergroupUpdate {
 	 * @param newValue the value of the update as a String. REMEMBER to write an integer as a String when updating NR_OF_... Else error will find you. Use Json to convert the GPSCoordinate to a String when updating LOCATION.
 	 */
 	public MissionIntergroupUpdate(MissionID missionId, UpdateContent content,
-			String newValue) {
+			Object newValue) {
 		this.missionId = missionId;
 		this.content = content;
 		this.newValue = newValue;
@@ -47,7 +47,7 @@ public class MissionIntergroupUpdate {
 	 * 
 	 * @return the value in the update
 	 */
-	public String getNewValue() {
+	public Object getNewValue() {
 		return newValue;
 	}
 
