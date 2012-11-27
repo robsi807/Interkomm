@@ -1,5 +1,6 @@
 package missionintergroup;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -14,7 +15,11 @@ import missionintergroup.MissionIntergroupUpdate.UpdateContent;
  * @author robsi807
  * 
  */
-public class MissionIntergroup {
+public class MissionIntergroup implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private final MissionID id;
 	private GPSCoordinate location;
 	private String title, description;
