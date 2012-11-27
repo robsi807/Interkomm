@@ -25,6 +25,9 @@ public class Main {
 	public static void main(String[] args) {
 		boolean connected = false;
 		Object incomeing = null;
+		System.out.println("Select faction char");
+//		char faction =
+		
 		MissionIntergroup testMisson = new MissionIntergroup(new MissionID('F', 1), new GPSCoordinate(10, 10), "Test misson", "this misson is testing", new Date());
 		ObjectOutputStream output = null;
 		ObjectInputStream input = null;

@@ -1,5 +1,7 @@
 package missionintergroup;
 
+import java.io.Serializable;
+
 /**
  * The ID that is used for missions. Contains a long that is unique for each
  * mission and a char that defines what organization created the mission(
@@ -11,8 +13,12 @@ package missionintergroup;
  * @author robsi807
  * 
  */
-public class MissionID {
+public class MissionID implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private char organizationChar;
 	private long idLong;
 

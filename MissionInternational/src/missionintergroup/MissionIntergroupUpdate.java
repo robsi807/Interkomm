@@ -1,5 +1,6 @@
 package missionintergroup;
 
+import java.io.Serializable;
 import java.sql.Time;
 
 /**
@@ -7,7 +8,11 @@ import java.sql.Time;
  * @author robsi807
  *
  */
-public class MissionIntergroupUpdate {
+public class MissionIntergroupUpdate implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private MissionID missionId;
 	private Object newValue;
 	private UpdateContent content;

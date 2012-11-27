@@ -15,7 +15,7 @@ import missionintergroup.MissionIntergroupUpdate.UpdateContent;
  * @author robsi807
  * 
  */
-public class MissionIntergroup implements Serializable {
+public class MissionIntergroup implements Serializable{
 	/**
 	 * 
 	 */
