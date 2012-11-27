@@ -57,7 +57,7 @@ public class Main {
 				}
 				if(incomeing != null){
 					if(incomeing instanceof MissionIntergroup){
-						System.out.println("A misson has arrived,");
+						System.out.println("A misson has arrived, it was called: " + ((MissionIntergroup)incomeing).getTitle());
 						incomeing = null;
 					}else if(incomeing instanceof MissionIntergroupUpdate){
 						System.out.println("A misson uppdate has arrived");
