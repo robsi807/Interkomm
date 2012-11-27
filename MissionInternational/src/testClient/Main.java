@@ -1,14 +1,13 @@
 package testClient;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Date;
+import java.util.Scanner;
+
+import authentication.LoginObject;
 
 import missionintergroup.GPSCoordinate;
 import missionintergroup.MissionID;
@@ -25,10 +24,11 @@ public class Main {
 	public static void main(String[] args) {
 		boolean connected = false;
 		Object incomeing = null;
+		Scanner in = new Scanner(System.in);
 		System.out.println("Select faction char");
-//		char faction =
-		
-		MissionIntergroup testMisson = new MissionIntergroup(new MissionID('F', 1), new GPSCoordinate(10, 10), "Test misson", "this misson is testing", new Date());
+		char faction = in.nextLine().charAt(0);
+		LoginObject login = new LoginObject(faction);
+		MissionIntergroup testMisson = new MissionIntergroup(new MissionID(faction, 1), new GPSCoordinate(10, 10), "Test misson", "this misson is testing", new Date());
 		ObjectOutputStream output = null;
 		ObjectInputStream input = null;
 		try {
@@ -43,6 +43,7 @@ public class Main {
 		while (connected){
 			if(testMisson != null){
 				try {
+					output.writeObject(login);
 					output.writeObject(testMisson);
 				} catch (IOException e) {
 					System.out.println("output error: " + e.toString());
