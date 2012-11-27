@@ -6,13 +6,13 @@ import java.util.LinkedList;
 
 import missionintergroup.MissionIntergroupUpdate.UpdateContent;
 
-import com.google.gson.Gson;
-
 /**
- * Mission class used for communication between the different organization's servers. Every organization has to use this to communicate with
- * each other. Use the updateMission() method to update an already existing mission.
+ * Mission class used for communication between the different organization's
+ * servers. Every organization has to use this to communicate with each other.
+ * Use the updateMission() method to update an already existing mission.
+ * 
  * @author robsi807
- *
+ * 
  */
 public class MissionIntergroup {
 	private final MissionID id;
@@ -24,15 +24,22 @@ public class MissionIntergroup {
 	private int[] numberOfUnits;
 
 	/**
-	 * Mission object used for communication between the different organization's servers.
-	 * @param id MÅSTE DEFINIERAS!!!!!!!!! UNIK FÖR VARJE ELLER DELAD?
-	 * @param location describes the location of the mission as a GPSCoordinate
-	 * @param title short description of the mission
-	 * @param description more detailed description of the mission
-	 * @param creationTime time when the mission is created
+	 * Mission object used for communication between the different
+	 * organization's servers.
+	 * 
+	 * @param id
+	 *            MÅSTE DEFINIERAS!!!!!!!!! UNIK FÖR VARJE ELLER DELAD?
+	 * @param location
+	 *            describes the location of the mission as a GPSCoordinate
+	 * @param title
+	 *            short description of the mission
+	 * @param description
+	 *            more detailed description of the mission
+	 * @param creationTime
+	 *            time when the mission is created
 	 */
-	public MissionIntergroup(MissionID id, GPSCoordinate location, String title,
-			String description, Date creationTime) {
+	public MissionIntergroup(MissionID id, GPSCoordinate location,
+			String title, String description, Date creationTime) {
 		this.id = id;
 		this.location = location;
 		this.title = title;
@@ -47,8 +54,10 @@ public class MissionIntergroup {
 	}
 
 	/**
-	 * Updates the mission with a MissionIntergroupUpdate object. An update can only update a mission with the same ID.
-	 * All updates are added to the missionlog.
+	 * Updates the mission with a MissionIntergroupUpdate object. An update can
+	 * only update a mission with the same ID. All updates are added to the
+	 * missionlog.
+	 * 
 	 * @param update
 	 */
 	public void updateMission(MissionIntergroupUpdate update) {
@@ -60,31 +69,31 @@ public class MissionIntergroup {
 	}
 
 	/*
-	 * Process the update to only change the relevant information based on the Content of the update.
+	 * Process the update to only change the relevant information based on the
+	 * Content of the update.
 	 */
 	private void processUpdate(MissionIntergroupUpdate update) {
 		switch (update.getContent()) {
 		case LOCATION:
-			GPSCoordinate location = new Gson().fromJson(update.getNewValue(), GPSCoordinate.class);
-			setLocation(location);
+			location = (GPSCoordinate) update.getNewValue();
 			break;
 		case TITLE:
-			setTitle(update.getNewValue());
+			setTitle((String) update.getNewValue());
 			break;
 		case DESCRIPTION:
-			setDescription(update.getNewValue());
+			setDescription((String) update.getNewValue());
 			break;
 		case NR_OF_POLICE:
-			setNumberOfPolice(update.getNewValue());
+			setNumberOfPolice((String) update.getNewValue());
 			break;
 		case NR_OF_FIREBRIGADE:
-			setNumberOfFirebrigade(update.getNewValue());
+			setNumberOfFirebrigade((String) update.getNewValue());
 			break;
 		case NR_OF_MILITARY:
-			setNumberOfMilitary(update.getNewValue());
+			setNumberOfMilitary((String) update.getNewValue());
 			break;
 		case NR_OF_PARAMEDICS:
-			setNumberOfParamedics(update.getNewValue());
+			setNumberOfParamedics((String) update.getNewValue());
 			break;
 		default:
 			break;
@@ -93,19 +102,23 @@ public class MissionIntergroup {
 
 	}
 
-	private void setNumberOfPolice(String nrOfPolice) throws NumberFormatException{
+	private void setNumberOfPolice(String nrOfPolice)
+			throws NumberFormatException {
 		numberOfUnits[0] = Integer.parseInt(nrOfPolice);
 	}
 
-	private void setNumberOfFirebrigade(String nrOfFirebridgade) throws NumberFormatException {
+	private void setNumberOfFirebrigade(String nrOfFirebridgade)
+			throws NumberFormatException {
 		numberOfUnits[1] = Integer.parseInt(nrOfFirebridgade);
 	}
 
-	private void setNumberOfMilitary(String nrOfMilitary) throws NumberFormatException {
+	private void setNumberOfMilitary(String nrOfMilitary)
+			throws NumberFormatException {
 		numberOfUnits[2] = Integer.parseInt(nrOfMilitary);
 	}
 
-	private void setNumberOfParamedics(String nrOfParamedics) throws NumberFormatException {
+	private void setNumberOfParamedics(String nrOfParamedics)
+			throws NumberFormatException {
 		numberOfUnits[3] = Integer.parseInt(nrOfParamedics);
 	}
 
@@ -138,8 +151,8 @@ public class MissionIntergroup {
 	}
 
 	private void setLocation(GPSCoordinate location) {
-		if(location != null)
-		this.location = location;
+		if (location != null)
+			this.location = location;
 	}
 
 	public GPSCoordinate getLocation() {
@@ -176,7 +189,8 @@ public class MissionIntergroup {
 
 	/**
 	 * 
-	 * @return the current log of the mission as a HashSet <-? is this the vettigaste solösning?
+	 * @return the current log of the mission as a HashSet <-? is this the
+	 *         vettigaste solösning?
 	 */
 	public LinkedList<MissionIntergroupUpdate> getMissionLog() {
 		return missionLog;
@@ -190,17 +204,20 @@ public class MissionIntergroup {
 
 	/**
 	 * Registers a listener to changes of the mission.
+	 * 
 	 * @param listener
 	 */
 	public void addListener(MissionIntergroupListener listener) {
 		listeners.add(listener);
 	}
-	
+
 	/**
 	 * Removes a listener from this mission.
-	 * @param listener the listener that will be removed from the set of listeners
+	 * 
+	 * @param listener
+	 *            the listener that will be removed from the set of listeners
 	 */
-	public void removeListener(MissionIntergroupListener listener){
+	public void removeListener(MissionIntergroupListener listener) {
 		listeners.remove(listener);
 	}
 
