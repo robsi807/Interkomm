@@ -25,7 +25,7 @@ public class MissionIntergroup {
 
 	/**
 	 * Mission object used for communication between the different organization's servers.
-	 * @param id MÅSTE DEFINIERAS!!!!!!!!! UNIK FÖR VARJE ELLER DELAD?
+	 * @param id Mï¿½STE DEFINIERAS!!!!!!!!! UNIK Fï¿½R VARJE ELLER DELAD?
 	 * @param location describes the location of the mission as a GPSCoordinate
 	 * @param title short description of the mission
 	 * @param description more detailed description of the mission
@@ -176,7 +176,7 @@ public class MissionIntergroup {
 
 	/**
 	 * 
-	 * @return the current log of the mission as a HashSet <-? is this the vettigaste solösning?
+	 * @return the current log of the mission as a HashSet <-? is this the vettigaste solï¿½sning?
 	 */
 	public LinkedList<MissionIntergroupUpdate> getMissionLog() {
 		return missionLog;

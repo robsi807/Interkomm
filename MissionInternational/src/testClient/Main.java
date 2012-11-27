@@ -1,5 +1,8 @@
 package testClient;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Date;
 
@@ -15,15 +18,23 @@ public class Main {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		new MissionIntergroup(new MissionID('F', 1), new GPSCoordinate(10, 10), "Test misson", "this misson is testing", new Date());
+		boolean connected = false;
+		
+		MissionIntergroup testMisson = new MissionIntergroup(new MissionID('F', 1), new GPSCoordinate(10, 10), "Test misson", "this misson is testing", new Date());
 		try {
-			Socket socket = new Socket(serverIP, serverPort);	
+			Socket socket = new Socket(serverIP, serverPort);
+			BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			PrintWriter output = new PrintWriter(socket.getOutputStream(), true);
+			connected = true;
 		} catch (Exception e) {
-			// TODO: handle exception
+			System.out.println("socket fail " + e.toString());
+			
 		}
-		
-		
-		while (true){
+		 
+		while (connected){
+			if(testMisson != null){
+				
+			}
 			
 		}
 	}
