@@ -8,7 +8,7 @@ import java.security.KeyStore;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.Scanner;
-
+import com.google.gson.Gson;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLServerSocket;
@@ -22,6 +22,7 @@ import missionintergroup.GPSCoordinate;
 import missionintergroup.MissionID;
 import missionintergroup.MissionIntergroup;
 import missionintergroup.MissionIntergroupUpdate;
+import missionintergroup.MissionIntergroupUpdate.UpdateContent;
 
 public class TestClient {
 	private static String serverIP = "130.236.77.94";
@@ -47,41 +48,67 @@ public class TestClient {
 		char faction = in.nextLine().charAt(0);
 		LoginObject login = new LoginObject(faction);
 		MissionIntergroup testMisson = new MissionIntergroup(new MissionID(faction, 1), new GPSCoordinate(10, 10), "Test misson", "this misson is testing", new Date());
+		MissionIntergroupUpdate testUpdate = new MissionIntergroupUpdate(new MissionID(faction, 1), UpdateContent.TITLE, "New name");
+		LoginObject testlogin = new LoginObject('f');
 		System.out.println(testMisson.getId().idToString());
 		ObjectOutputStream output = null;
 		ObjectInputStream input = null;
-//		SSLSocket socket = null;
 		Socket socket = null;
+		boolean test = true;
+		Gson gson = new Gson();
+		
+		String missonTester = gson.toJson(testMisson);
+		String updateTester = gson.toJson(testUpdate);
+		String loginTester = gson.toJson(testlogin);
+		if(missonTester.contains("\"identifier\":\"@Missonintergroup@\"")){
+			System.out.println("its alive");
+			MissionIntergroup con = gson.fromJson(missonTester, MissionIntergroup.class);
+			System.out.println(con.getTitle());
+		}
+		if(updateTester.contains("\"identifier\":\"@MissonUpdateInter@\"")){
+			System.out.println("update is alive");
+			MissionIntergroupUpdate up = gson.fromJson(updateTester, MissionIntergroupUpdate.class);
+			System.out.println(up.getNewValue());
+		}
+		if(loginTester.contains("\"identifier\":\"@login@\"")){
+			System.out.println("login is alive");
+			System.out.println(gson.fromJson(loginTester, LoginObject.class));
+		}
+		
+		/*
 		try {
 //			SSLSocketFactory sslsocketfactory = SSLC.getSocketFactory();
 //			socket = (SSLSocket) sslsocketfactory.createSocket(serverIP,serverPort);
 			socket = new Socket(serverIP,serverPort);
 			input = new ObjectInputStream (socket.getInputStream());
 			output = new ObjectOutputStream (socket.getOutputStream());
-			
 			connected = true;
 		} catch (Exception e) {
 			System.out.println("socket fail " + e.toString());
 		}
-		 
+		
 		while (connected){
-			if(testMisson != null){
 				try {
 					output.writeObject(login);
-					output.writeObject(testMisson);
-					testMisson = null;
+//					testMisson = null;
 				} catch (IOException e) {
 					System.out.println("output error: " + e.toString());
 				}
-			}
 			while(true){
+				if(test){
+					try {
+						output.writeObject(testMisson);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					test = false;
+				}
 				try {
 					incomeing = input.readObject();
-				} catch (IOException e) {
+				} catch (Exception e) {
 					e.printStackTrace();
-				} catch (ClassNotFoundException e) {
-					e.printStackTrace();
-				}
+				} 
 				if(incomeing != null){
 					if(incomeing instanceof MissionIntergroup){
 						System.out.println("A misson has arrived, it was called: " + ((MissionIntergroup)incomeing).getTitle());
@@ -91,8 +118,8 @@ public class TestClient {
 						incomeing = null;
 					}
 				}
-			}
-		}
+			} 
+		}*/ 
 	}
 
 }

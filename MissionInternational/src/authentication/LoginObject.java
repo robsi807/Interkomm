@@ -3,10 +3,10 @@ package authentication;
 import java.io.Serializable;
 
 /**
- * Skickar detta object till servern. Servern identifierar att det är ett
+ * Skickar detta object till servern. Servern identifierar att det ï¿½r ett
  * loginobject som kommer in med objectStreamen (instanceof) och lagrar socketen
- * tillsammans med organisationen i en hashmap. Hashmapen används för att
- * referera till outputstream där object skrivs över nätverket.
+ * tillsammans med organisationen i en hashmap. Hashmapen anvï¿½nds fï¿½r att
+ * referera till outputstream dï¿½r object skrivs ï¿½ver nï¿½tverket.
  * 
  * @author robsi807
  * 
@@ -14,7 +14,7 @@ import java.io.Serializable;
 public class LoginObject implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-
+	private String identifier = "@login@";
 	private char organizationChar;
 
 	public LoginObject(char organizationChar) {

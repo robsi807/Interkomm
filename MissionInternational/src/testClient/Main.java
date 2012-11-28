@@ -3,8 +3,7 @@ package testClient;
 
 
 public class Main {
-	private static String serverIP = null;
-	private static int serverPort = 0;
+	
 	
 	/**
 	 * @param args

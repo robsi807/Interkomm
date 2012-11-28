@@ -20,6 +20,7 @@ public class MissionIntergroup implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private final String identifier = "@Missonintergroup@";
 	private final MissionID id;
 	private GPSCoordinate location;
 	private String title, description;

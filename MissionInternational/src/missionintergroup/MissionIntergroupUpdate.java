@@ -12,6 +12,7 @@ public class MissionIntergroupUpdate implements Serializable{
 	/**
 	 * 
 	 */
+	private final String identifier = "@MissonUpdateInter@";
 	private static final long serialVersionUID = 1L;
 	private MissionID missionId;
 	private Object newValue;
