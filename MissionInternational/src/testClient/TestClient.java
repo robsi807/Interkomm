@@ -1,8 +1,11 @@
 package testClient;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
 import java.net.Socket;
 import java.security.KeyStore;
 import java.security.NoSuchAlgorithmException;
@@ -42,46 +45,46 @@ public class TestClient {
 		SSLContext SSLC = null;
 		
 		boolean connected = false;
-		Object incomeing = null;
+		String incomeingString = null;
 		Scanner in = new Scanner(System.in);
 		System.out.println("Select faction char");
 		char faction = in.nextLine().charAt(0);
+		
 		LoginObject login = new LoginObject(faction);
+		
 		MissionIntergroup testMisson = new MissionIntergroup(new MissionID(faction, 1), new GPSCoordinate(10, 10), "Test misson", "this misson is testing", new Date());
 		MissionIntergroupUpdate testUpdate = new MissionIntergroupUpdate(new MissionID(faction, 1), UpdateContent.TITLE, "New name");
 		LoginObject testlogin = new LoginObject('f');
 		System.out.println(testMisson.getId().idToString());
-		ObjectOutputStream output = null;
-		ObjectInputStream input = null;
+		PrintWriter output = null;
+		BufferedReader input = null;
 		Socket socket = null;
 		boolean test = true;
 		Gson gson = new Gson();
 		
-		String missonTester = gson.toJson(testMisson);
-		String updateTester = gson.toJson(testUpdate);
-		String loginTester = gson.toJson(testlogin);
-		if(missonTester.contains("\"identifier\":\"@Missonintergroup@\"")){
-			System.out.println("its alive");
-			MissionIntergroup con = gson.fromJson(missonTester, MissionIntergroup.class);
-			System.out.println(con.getTitle());
-		}
-		if(updateTester.contains("\"identifier\":\"@MissonUpdateInter@\"")){
-			System.out.println("update is alive");
-			MissionIntergroupUpdate up = gson.fromJson(updateTester, MissionIntergroupUpdate.class);
-			System.out.println(up.getNewValue());
-		}
-		if(loginTester.contains("\"identifier\":\"@login@\"")){
-			System.out.println("login is alive");
-			System.out.println(gson.fromJson(loginTester, LoginObject.class));
-		}
+//		String missonTester = gson.toJson(testMisson);
+//		String updateTester = gson.toJson(testUpdate);
+//		String loginTester = gson.toJson(testlogin);
+//		if(missonTester.contains("\"identifier\":\"@Missonintergroup@\"")){
+//			System.out.println("its alive");
+//			MissionIntergroup con = gson.fromJson(missonTester, MissionIntergroup.class);
+//			System.out.println(con.getTitle());
+//		}
+//		if(updateTester.contains("\"identifier\":\"@MissonUpdateInter@\"")){
+//			System.out.println("update is alive");
+//			MissionIntergroupUpdate up = gson.fromJson(updateTester, MissionIntergroupUpdate.class);
+//			System.out.println(up.getNewValue());
+//		}
+//		if(loginTester.contains("\"identifier\":\"@login@\"")){
+//			System.out.println("login is alive");
+//			System.out.println(gson.fromJson(loginTester, LoginObject.class));
+//		}
 		
-		/*
+		
 		try {
-//			SSLSocketFactory sslsocketfactory = SSLC.getSocketFactory();
-//			socket = (SSLSocket) sslsocketfactory.createSocket(serverIP,serverPort);
 			socket = new Socket(serverIP,serverPort);
-			input = new ObjectInputStream (socket.getInputStream());
-			output = new ObjectOutputStream (socket.getOutputStream());
+			input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			output = new PrintWriter(socket.getOutputStream(), true);
 			connected = true;
 		} catch (Exception e) {
 			System.out.println("socket fail " + e.toString());
@@ -89,37 +92,30 @@ public class TestClient {
 		
 		while (connected){
 				try {
-					output.writeObject(login);
+					output.println(gson.toJson(login));
 //					testMisson = null;
-				} catch (IOException e) {
+				} catch (Exception e) {
 					System.out.println("output error: " + e.toString());
 				}
 			while(true){
 				if(test){
 					try {
-						output.writeObject(testMisson);
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
+						output.println(gson.toJson(testMisson));
+					} catch (Exception e) {
 						e.printStackTrace();
 					}
 					test = false;
 				}
 				try {
-					incomeing = input.readObject();
+					incomeingString = input.readLine();
+					System.out.println("Incomeing string LOL: " + incomeingString);
 				} catch (Exception e) {
 					e.printStackTrace();
 				} 
-				if(incomeing != null){
-					if(incomeing instanceof MissionIntergroup){
-						System.out.println("A misson has arrived, it was called: " + ((MissionIntergroup)incomeing).getTitle());
-						incomeing = null;
-					}else if(incomeing instanceof MissionIntergroupUpdate){
-						System.out.println("A misson uppdate has arrived");
-						incomeing = null;
-					}
-				}
+				
+				
 			} 
-		}*/ 
+		} 
 	}
 
 }
