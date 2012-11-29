@@ -28,7 +28,7 @@ import missionintergroup.MissionIntergroupUpdate;
 import missionintergroup.MissionIntergroupUpdate.UpdateContent;
 
 public class TestClient {
-	private static String serverIP = "130.236.77.94";
+	private static String serverIP = "130.236.71.140"; 
 	private static int serverPort = 3802;
 	
 	/**
@@ -93,11 +93,11 @@ public class TestClient {
 		while (connected){
 				try {
 					output.println(gson.toJson(login));
-//					testMisson = null;
 				} catch (Exception e) {
 					System.out.println("output error: " + e.toString());
 				}
-			while(true){
+			boolean loop = true;
+			while(loop){
 				if(test){
 					try {
 						output.println(gson.toJson(testMisson));
@@ -108,9 +108,13 @@ public class TestClient {
 				}
 				try {
 					incomeingString = input.readLine();
-					System.out.println("Incomeing string LOL: " + incomeingString);
+					if(!incomeingString.equals("&")){
+						System.out.println("Incomeing string is: " + incomeingString);	
+					}
 				} catch (Exception e) {
-					e.printStackTrace();
+					System.out.println("error " + e.toString());
+					System.out.println("disconnected");
+					loop = false;
 				} 
 				
 				
